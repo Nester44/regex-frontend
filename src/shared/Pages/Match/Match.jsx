@@ -36,7 +36,11 @@ const Match = () => {
       flexDirection='column'
       justifyContent='center'
     >
-      <Link to={ROUTES.REPLACE}>Replace</Link>
+      <Box display='flex' justifyContent='center' mt={8}>
+        <Link to={ROUTES.REPLACE} style={{ fontSize: 34 }}>
+          Replace
+        </Link>
+      </Box>
 
       <FormWrapper>{getStep()}</FormWrapper>
     </Box>
