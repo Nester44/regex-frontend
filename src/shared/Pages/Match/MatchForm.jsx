@@ -1,23 +1,20 @@
 import { Button, Stack, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
-import { default as React } from 'react'
+import React from 'react'
 import * as yup from 'yup'
 import { api } from '../../constants/axios'
 
 const validationSchema = yup.object({
   text: yup.string().required('Text is required'),
   regex: yup.string().required('Regex is required'),
-  replace: yup.string().required('Replace is required'),
 })
 
-const ReplaceForm = ({ setResultText, setStep }) => {
+const MatchForm = ({ setResultText, setStep }) => {
   const onSubmit = async (values) => {
     try {
-      const response = await api.post('/replace', values)
+      const response = await api.post('/match', values)
       setStep(1)
-      const matches = response.data.matches
-
-      setResultText(matches.join(','))
+      setResultText(response.data.text)
     } catch (error) {
       alert('Something went wrong')
     }
@@ -26,7 +23,6 @@ const ReplaceForm = ({ setResultText, setStep }) => {
     initialValues: {
       text: '',
       regex: '',
-      replace: '',
     },
     onSubmit,
     validationSchema,
@@ -35,7 +31,7 @@ const ReplaceForm = ({ setResultText, setStep }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Typography variant='h4'>Replace</Typography>
+      <Typography variant='h4'>Match</Typography>
       <Stack mt={4} gap={2}>
         <TextField
           autoComplete='off'
@@ -44,14 +40,6 @@ const ReplaceForm = ({ setResultText, setStep }) => {
           {...getFieldProps('regex')}
           error={Boolean(formik.errors.regex) && formik.touched.regex}
           helperText={formik.touched.regex && formik.errors.regex}
-        />
-        <TextField
-          autoComplete='off'
-          variant='filled'
-          label='Replace'
-          {...getFieldProps('replace')}
-          error={Boolean(formik.errors.replace) && formik.touched.replace}
-          helperText={formik.touched.replace && formik.errors.replace}
         />
         <TextField
           autoComplete='off'
@@ -71,4 +59,4 @@ const ReplaceForm = ({ setResultText, setStep }) => {
   )
 }
 
-export default ReplaceForm
+export default MatchForm
